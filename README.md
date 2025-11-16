@@ -3,8 +3,7 @@ End-to-End data platform ingesting raw data from api to demonstrate ETL process.
 
 ## Data Source 
 
-The data used in this project was sourced from the official U.S Department of Education api [here](https://collegescorecard.ed.gov/data). You can also request an api key under [API Access and Authentication
-](https://collegescorecard.ed.gov/data/api-documentation).
+The data used in this project was sourced from the official U.S Department of Education api [here](https://collegescorecard.ed.gov/data). You can also request an api key under [API Access and Authentication](https://collegescorecard.ed.gov/data/api-documentation).
 
 ## Intention 
 
