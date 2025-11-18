@@ -6,39 +6,56 @@ import time
 from datetime import datetime,timedelta
 import sys
 
-#api_execution_data is json object
-def get_university_data_http(**http_params):
-        
-    load_dotenv()
 
-    COLLEGESCORE_API_KEY =  os.getenv("COLLEGESCORE_API_KEY")
+def write_api_execution_data(new_api_execution_data: dict ,json_file_path='./api_execution_data.json'):
+    with open(json_file_path, 'w') as file:
+        json.dump(new_api_execution_data, file)
 
-    if os.path.exists('./api_execution_data.json'): 
-        with open('./api_execution_data.json', 'r') as file:
-            api_execution_data = json.load(file)        
+
+def load_api_execution_data(json_file_path='./api_execution_data.json') -> dict:  
+
+    if os.path.exists(json_file_path): 
+        with open(json_file_path, 'r') as file:
+            api_execution_data = json.load(file)
             last_execution_time = api_execution_data['last_execution_time']
-            api_call_count = api_execution_data['api_call_count']        
+            api_call_count = api_execution_data['api_call_count'] 
+        return {'last_execution_time':last_execution_time, 'api_call_count':api_call_count}   
     else: 
-        last_execution_time = datetime.now()
-        api_call_count = 0        
+        last_execution_time = datetime.now().isoformat()
+        api_call_count = 0   
+    return {'last_execution_time':last_execution_time, 'api_call_count':api_call_count}
 
+
+def get_university_data_http(http_params: dict, last_execution_data: dict):
     
-    all_data = dict()
+    load_dotenv()
+    COLLEGESCORE_API_KEY =  os.getenv("COLLEGESCORE_API_KEY")
+    all_data = dict()    
+
+    last_execution_time = datetime.fromisoformat(last_execution_data['last_execution_time'])
+    api_call_count = last_execution_data['api_call_count']
+    
     
     url = f'https://api.data.gov/ed/collegescorecard/v1/schools?api_key={COLLEGESCORE_API_KEY}'
+    
 
     status = requests.get(url, params=http_params)
+    
+    content = json.loads(status.content)
 
-    print(status)
 
-    # if status:
-    #     if (datetime.now().minute-last_execution_time.minute)<60 and api_call_count<1000:
-    #         api_call_count += 1 
-    #     else: 
-    #         raise Exception('You have reached the api call limit')
+    if status:
+        if (datetime.now().minute-last_execution_time.minute)<60 and api_call_count<1000:
+            api_call_count += 1 
+        else: 
+            raise Exception('You have reached the api call limit')
+    else: 
+        raise Exception('packet is empty')
             
 
 
+
+    return status
 
     # metadata = status['metadata']
     # current_page, total_pages = metadata['page'], metadata['total']
@@ -71,8 +88,6 @@ def get_university_data_http(**http_params):
     # new_api_execution_data = {'last_execution_time': datetime.now(), \
     #                           'api_call_count': api_call_count}
 
-    # with open('./api_execution_data.json', 'w'):
-    #     json.dump(new_api_execution_data)
 
     
 
