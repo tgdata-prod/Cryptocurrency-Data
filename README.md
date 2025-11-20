@@ -9,3 +9,6 @@ The data used in this project was sourced from the official U.S Department of Ed
 
 It is our goal in this project to demonsrate a sort of end-to-end ETL process with Bi capabilities, specifically with Data Bricks and Power BI in mind. 
 
+### Cloud Platform 
+
+Databricks is cloud platform independant, we use Microsoft Azure in this project

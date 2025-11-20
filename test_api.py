@@ -46,7 +46,7 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
         if status and status.status_code==200:
             try:      
                 #Rate Limit (https://collegescorecard.ed.gov/data/api-documentation/)  
-                if (datetime.now()-last_execution_time).min<60 and api_call_count<1000:
+                if (datetime.now()-last_execution_time).total_seconds/60 < 60 and api_call_count<1000:
                     api_call_count += 1 
                 else: 
                     raise Exception('You have reached the api call limit')
