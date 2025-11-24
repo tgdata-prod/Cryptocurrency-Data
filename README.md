@@ -12,3 +12,7 @@ It is our goal in this project to demonsrate a sort of end-to-end ETL process wi
 ### Cloud Platform 
 
 Databricks is cloud platform independant, we use Microsoft Azure in this project
+
+## Rate-Limits 
+
+Unfortunately the documentation does not specify when the rate-limit resets so we are going to assume it resets per UTC hour. 
