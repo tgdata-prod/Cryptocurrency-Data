@@ -56,19 +56,22 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
         status = requests.get(url, http_params, timeout=30)
         status.raise_for_status()
         api_call_count+=1
-        
 
-        if not status and not status.status_code==200:
+
+        if not status or not status.status_code==200:
             print(f'http error occured with code {status.status_code}')
             break
                     
         content = json.loads(status.content)
 
-        metadata = content['metadata']
 
+        metadata = content['metadata']
+        
         total_pages = metadata['total']
     
-        
+        if abs(total_pages-api_call_count)>999:
+            print('too many pages to load')
+            break
 
         results = content.get('results', {})
         if not results:
