@@ -11,7 +11,10 @@ It is our goal in this project to demonsrate a sort of end-to-end ETL process wi
 
 ### Cloud Platform 
 
-Databricks is cloud platform independant, we use Microsoft Azure in this project
+Databricks is cloud platform independant, we use Microsoft Azure in this project.
+To download the CLI for Azure, you will need to install using ```ps1 winget install --exact --id Microsoft.AzureCLI```.
+
+
 
 ## Rate-Limits 
 

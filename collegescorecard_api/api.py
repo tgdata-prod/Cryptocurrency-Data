@@ -64,7 +64,6 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
                     
         content = json.loads(status.content)
 
-
         metadata = content['metadata']
         
         total_pages = metadata['total']
@@ -74,6 +73,8 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
             break
 
         results = content.get('results', {})
+        
+        
         if not results:
             print('no results')
             break
@@ -97,6 +98,7 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
             return all_data, metadata
 
         time.sleep(0.5)
-    new_api_execution_data = {'last_execution_time': utc_now.astimezone(tz=pytz.timezone('Australia/Melbourne')).isoformat(), 'api_call_count': api_call_count}  
+    new_api_execution_data = {'last_execution_time_utc': utc_now.isoformat(), 'api_call_count': api_call_count}   
     write_api_execution_data(new_api_execution_data)
+    return None
     
