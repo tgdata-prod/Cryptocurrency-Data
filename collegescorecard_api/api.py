@@ -24,7 +24,7 @@ def load_api_execution_data(json_file_path='./api_execution_data.json') -> dict:
         api_call_count = 0   
     return {'last_execution_time_utc':last_execution_time_utc, 'api_call_count':api_call_count}
 
-
+#potential http params reference (https://collegescorecard.ed.gov/data/api-documentation/)
 def get_university_data_http(http_params: dict, last_execution_data: dict):
     
     load_dotenv()
@@ -59,8 +59,8 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
 
 
         if not status or not status.status_code==200:
-            print(f'http error occured with code {status.status_code}')
-            break
+            raise Exception(f'http error occured with code {status.status_code}')
+            
                     
         content = json.loads(status.content)
 
@@ -69,20 +69,15 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
         total_pages = metadata['total']
     
         if abs(total_pages-api_call_count)>999:
-            print('too many pages to load')
-            break
+            raise Exception('too many pages to load in accordance with rate limit')
+            
 
         results = content.get('results', {})
         
         
         if not results:
-            print('no results')
-            break
-        if len(results)>1:
-            print('larger dimension of results than expected')
-            break 
-        else:
-            results = results[0]
+            raise Exception('no results')
+            
         
         all_data.append(results)
         page = page + 1
@@ -91,14 +86,19 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
 
         if page>=total_pages:
             print('\n\nall pages cycled')
-            new_api_execution_data = {'last_execution_time_utc': utc_now.isoformat(), 'api_call_count': api_call_count} 
-            write_api_execution_data(new_api_execution_data)
+            new_api_execution_data = {'last_execution_time_utc': utc_now.isoformat(), 'api_call_count': api_call_count}   
             print(f'last executed {new_api_execution_data}')
             print(f'time in mins until refresh {(last_execution_time_utc_last_reset+timedelta(hours=1))-utc_now}')        
-            return all_data, metadata
+            return all_data, new_api_execution_data
 
         time.sleep(0.5)
-    new_api_execution_data = {'last_execution_time_utc': utc_now.isoformat(), 'api_call_count': api_call_count}   
-    write_api_execution_data(new_api_execution_data)
-    return None
+        
     
+def api_main(http_params: dict):
+    last_execution_data = load_api_execution_data()
+    data, new_api_execution_data = get_university_data_http(http_params=http_params, \
+                                                            last_execution_data=last_execution_data)
+    new_api_execution_data = {'last_execution_time_utc': new_api_execution_data['last_execution_time_utc'], \
+                              'api_call_count': new_api_execution_data['api_call_count']} 
+    write_api_execution_data(new_api_execution_data)
+    return data
