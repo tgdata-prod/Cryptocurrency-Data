@@ -10,7 +10,6 @@ def write_api_execution_data(new_api_execution_data: dict ,json_file_path='./api
     with open(json_file_path, 'w') as file:
         json.dump(new_api_execution_data, file)
 
-
 def load_api_execution_data(json_file_path='./api_execution_data.json') -> dict:  
 
     if os.path.exists(json_file_path): 
