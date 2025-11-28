@@ -25,9 +25,10 @@ def load_api_execution_data(json_file_path='./api_execution_data.json') -> dict:
     return {'last_execution_time_utc':last_execution_time_utc, 'api_call_count':api_call_count}
 
 #potential http params reference (https://collegescorecard.ed.gov/data/api-documentation/)
-def get_university_data_http(http_params: dict, last_execution_data: dict):
+def get_university_data_http(http_params: dict):
     
     load_dotenv()
+    last_execution_data = load_api_execution_data()
     COLLEGESCORE_API_KEY =  os.getenv("COLLEGESCORE_API_KEY")
     url = f'https://api.data.gov/ed/collegescorecard/v1/schools?api_key={COLLEGESCORE_API_KEY}'
 
@@ -90,16 +91,21 @@ def get_university_data_http(http_params: dict, last_execution_data: dict):
             print(f'last executed {new_api_execution_data}')
             print(f'time in mins until refresh {(last_execution_time_utc_last_reset+timedelta(hours=1))-utc_now}')  
                     
-            return all_data, new_api_execution_data
+            return all_data
         time.sleep(0.5)
-        
-    
-def api_main(http_params: dict):
 
-    last_execution_data = load_api_execution_data()
-    data, new_api_execution_data = get_university_data_http(http_params=http_params, \
-                                                            last_execution_data=last_execution_data)
-    new_api_execution_data = {'last_execution_time_utc': new_api_execution_data['last_execution_time_utc'], \
-                            'api_call_count': new_api_execution_data['api_call_count']} 
-    write_api_execution_data(new_api_execution_data)
-    return data
+if __name__ == "__main__":
+
+    fields= ['id', 'school.name', 'school.state', 'latest.student.size', 
+         'latest.cost.tuition.in_state', 'latest.cost.tuition.out_of_state']
+    i=0
+    str_obj=str()
+    for field in fields:
+        if i == 0:
+            str_obj = str_obj+f'{field}'
+        else:
+            str_obj = str_obj+f',{field}'
+        i+=1
+    http_params = {'school.name': 'Harvard University','fields': str_obj}
+    data = get_university_data_http(http_params=http_params)
+    print(data)
