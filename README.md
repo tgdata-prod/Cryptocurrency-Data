@@ -12,8 +12,12 @@ It is our goal in this project to demonsrate a sort of end-to-end ETL process wi
 ### Cloud Platform 
 
 Databricks is cloud platform independant, we use Microsoft Azure in this project.
-To download the CLI for Azure, you will need to install using ```ps1 winget install --exact --id Microsoft.AzureCLI```.
+To download the CLI for Azure, you will need to install using ```winget install --exact --id Microsoft.AzureCLI```.
+You can then log in to Azure using ```az login``` in power shell.
 
+### Cloud Authentication
+
+Follow the authentication guide [here](https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli?view=azure-cli-latest) to set up your Azure CLI environemnt that you installed.
 
 
 ## Rate-Limits 
