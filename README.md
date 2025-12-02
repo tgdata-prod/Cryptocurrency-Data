@@ -24,12 +24,17 @@ Before you can authenticate locally you need to [create an account with Azure](h
 
 You can then log in to Azure using ```az login``` in the cli, there should be a default subscription that is created when you first make an account with azure and you can find it using ```az account list``` under "name".
 Once you have your subscription name, you can run ```az account get-access-token --subscription "<subscription ID or name>"``` to recieve your JWT, you don't need to store this token as it is stored when you run ```az login```.
+
 You now have two choices to authenticate your python application, you can either use a [service principal](https://learn.microsoft.com/en-us/azure/developer/python/sdk/authentication-local-development-service-principal) or create a [dev account](https://learn.microsoft.com/en-us/azure/developer/python/sdk/authentication/local-development-dev-accounts?tabs=azure-cli%2Csign-in-azure-cli). In this project, we use a dev account because we may want to onboard other developers in the future instead of making service principals for every developer. The downside of this approach however is developers may have more perms than they require so it is recommended for small teams. 
+
 [This image](https://learn.microsoft.com/en-us/azure/developer/python/sdk/media/local-dev-dev-accounts-overview.png) demonstrates how applciation authentication works in azure. 
 
 You now have to create a security group for the account using ```az ad group create --display-name <display name here> --mail-nickname <mail nickname here> --description "security group to manage our python application"```.
+
 The cmdlet should out-put an id we will need, if not, use ```az ad group show --group "<my group>" --query id --output tsv```.
+
 You can now get the users Object Id using [```az ad user list```](https://learn.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest#az-ad-user-list) for the dev you want to add.
+
 This will give you their Object Id and you can use it to now add them to the group ```az ad group member add --group <group-name> --member-id <object-id>``` 
 
 ### Assigning roles to your group
