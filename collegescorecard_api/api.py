@@ -98,19 +98,3 @@ def get_university_data_http(http_params: dict):
                     
             return all_data
         time.sleep(0.5)
-
-if __name__ == "__main__":
-    #test fields for Tom
-    fields= ['id', 'school.name', 'school.state', 'latest.student.size', 
-         'latest.cost.tuition.in_state', 'latest.cost.tuition.out_of_state']
-    i=0
-    str_obj=str()
-    for field in fields:
-        if i == 0:
-            str_obj = str_obj+f'{field}'
-        else:
-            str_obj = str_obj+f',{field}'
-        i+=1
-    http_params = {'school.name': 'Harvard University','fields': str_obj}
-    data = get_university_data_http(http_params=http_params)
-    print(data)
