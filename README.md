@@ -11,7 +11,8 @@ The data used in this project was sourced from the official U.S Department of Ed
 
 ## Intention 
 
-It is our goal in this project to demonsrate a sort of end-to-end ETL process with Bi capabilities, specifically with Data Bricks and Power BI in mind. 
+It is our goal in this project to demonsrate a sort of end-to-end ETL process with Bi capabilities, specifically with Data Bricks and Power BI in mind.
+It will go through most of everything from setting up cloud environments and creating pipelines with medallion architecture.  
 
 ## Azure Cloud 
 
@@ -59,11 +60,9 @@ First you will need to enable the databricks connector in Azure under your resou
 
 You can follow the [CLI tutorial here](https://docs.databricks.com/aws/en/dev-tools/cli/tutorial?language=Windows), install the Databricks CLI ```winget install Databricks.DatabricksCLI```.
 
-then run ```databricks auth login --host <your-workbook-url>```.
+Then run ```databricks auth login --host <your-workbook-url>``` and follow the gateway, you should now be authenticated with your databricks env.
 
 
-
-You may need to
 
 
 
