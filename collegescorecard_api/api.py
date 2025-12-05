@@ -8,11 +8,11 @@ import pytz
 from tenacity import retry, retry_if_not_exception_type, wait_exponential, stop_after_attempt, stop_after_delay  
 from urllib.error import HTTPError
 
-def write_api_execution_data(new_api_execution_data: dict ,json_file_path='./api_execution_data.json'):
+def write_api_execution_data(new_api_execution_data: dict ,json_file_path='collegescorecard_api/api_execution_data.json'):
     with open(json_file_path, 'w') as file:
         json.dump(new_api_execution_data, file)
 
-def load_api_execution_data(json_file_path='./api_execution_data.json') -> dict:  
+def load_api_execution_data(json_file_path='collegescorecard_api/api_execution_data.json') -> dict:  
 
     if os.path.exists(json_file_path): 
         with open(json_file_path, 'r') as file:
